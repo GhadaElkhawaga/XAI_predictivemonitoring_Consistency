@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
 from explaining.XAImethods import explain_predictions
-from evaluation.Consistency_measures import calculate_abic
 from helpers.Encoders import get_encoder
 from helpers.Bucketers import get_bucketer
 from helpers.DatasetManager import DatasetManager
