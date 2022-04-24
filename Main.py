@@ -16,7 +16,7 @@ from evaluation.Consistency_ratios import compute_reducts_core, ComputeRatio
 
 
 n_iter = 3
-out_dir = 'XIA_global_FeatsConsis'
+out_dir = 'XAI_global_FeatsConsis'
 if not os.path.exists(os.path.join(out_dir)):
   os.makedirs(os.path.join(out_dir))
 reds_core_dir = os.path.join(out_dir, 'reducts_core')
@@ -102,23 +102,23 @@ for method_name in ['single_agg', 'prefix_index']:
                 selected_red = list(all_reds.values())[shortest_red_idx]
                 reduct_feats_indices = selected_red
                 reduct_feats = [ffeatures[item] for item in selected_red]
-                sselected_by_xai_reduct , reduct_xia_time, selected_by_xai_core,\
-                core_xia_time = (defaultdict(dict) for i in range(4))
+                selected_by_xai_reduct , reduct_xai_time, selected_by_xai_core,\
+                core_xai_time = (defaultdict(dict) for i in range(4))
                 for cls_method in ['xgboost', 'logit']:
                     for xai_type in ['shap', 'perm', 'ALE']:
                         key = '%s_%s_%s' % (dataset_name, cls_method, xai_type)
                         out_folder = {'ALE': 'ALE_artefacts', 'shap': 'shap_artefacts', 'perm': 'perm_artefacts'}
-                        core_xia_time_start = time.time()
+                        core_xai_time_start = time.time()
 
                         selected_by_xai_core[key] = get_imp_features(out_folder[xai_type], file_name, dataset_name,
                                                                      ffeatures, cls_method,
                                                                      len(core_Feats_indices), fstr, xai_type)
-                        core_xia_time[key] = time.time() - core_xia_time_start
-                        reduct_xia_time_start = time.time()
+                        core_xai_time[key] = time.time() - core_xai_time_start
+                        reduct_xai_time_start = time.time()
                         selected_by_xai_reduct[key] = get_imp_features(out_folder[xai_type], file_name, dataset_name,
                                                                        ffeatures, cls_method,
                                                                        len(reduct_feats_indices), fstr, xai_type)
-                        reduct_xia_time[key] = time.time() - reduct_xia_time_start
+                        reduct_xai_time[key] = time.time() - reduct_xai_time_start
 
                     for x in [selected_by_xai_core, selected_by_xai_reduct]:
                         scale_update(x)
@@ -175,14 +175,14 @@ for method_name in ['single_agg', 'prefix_index']:
                         fout.write('%s;%s\n' % ('Core_feats_%s' % (file_name), core_feats))
                         fout.write('\n')
                     selected_feats_reduct = pd.DataFrame.from_dict([selected_by_xai_reduct])
-                    xia_reduct_time = pd.DataFrame.from_dict([reduct_xia_time])
+                    xai_reduct_time = pd.DataFrame.from_dict([reduct_xai_time])
                     selected_feats_core = pd.DataFrame.from_dict([selected_by_xai_core])
-                    xia_core_time = pd.DataFrame.from_dict([core_xia_time])
+                    xai_core_time = pd.DataFrame.from_dict([core_xai_time])
                     selected_feats_df = pd.concat([selected_feats_reduct, selected_feats_core,
-                                                   xia_reduct_time, xia_core_time], axis=0)
+                                                   xai_reduct_time, xai_core_time], axis=0)
                     selected_feats_df.reset_index(inplace=True, drop=True)
                     idx = pd.DataFrame(['selected_by_xai_reduct', 'selected_by_xai_core',
-                                        'reduct_xia_time', 'core_xia_time'])
+                                        'reduct_xai_time', 'core_xai_time'])
                     selected_feats_df = pd.concat([idx, selected_feats_df], axis=1)
                     selected_feats_df.to_csv(os.path.join(measurements_dir, 'measurements_%s.csv' % (file_name)),
                                              sep=';', mode='a', index=False)
