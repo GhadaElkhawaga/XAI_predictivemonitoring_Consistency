@@ -6,7 +6,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
-from explaining.XAImethods import explain_predictions
 from helpers.Encoders import get_encoder
 from helpers.Bucketers import get_bucketer
 from helpers.DatasetManager import DatasetManager
