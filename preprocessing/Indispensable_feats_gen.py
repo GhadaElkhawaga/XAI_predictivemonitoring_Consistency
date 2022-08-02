@@ -153,6 +153,15 @@ def compute_features_importance(out_dir, ds, X_train, y_train, ffeatures, target
     calc_cols = results_df.columns.tolist()
     calc_cols.remove('feature')
     results_df.drop('feature', 1, inplace=True)
+    
+    #shift columns containing negative values before normalization:
+    l_negative = results_df.columns[(results_df < 0).any()].tolist()
+    if l_negative:
+        for x in l_negative:
+          min = results_df[l_negative].min() 
+          if min < 0:
+            results_df[x] = results_df[x].apply(lambda x: x +abs(min))
+            
     std_scaler = MinMaxScaler().fit(results_df)
     results_df = pd.DataFrame(std_scaler.transform(results_df),
                               columns=results_df.columns)
