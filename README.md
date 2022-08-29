@@ -7,3 +7,5 @@ To use this repo:
 Run "Main.py". This module calls others to train a model for each preprocessed event log, then calls explanation module to explain predictions. It also calls necessary functions to compute the different metrics needed to evaluate and compare different XAI methods.
 
 "experiments.py" contains some experiments executed to validate our ratios computation based on scores rather than the raw number of features at the intersection.
+
+Note that in this Repo, we retrieve pre-trained models and encoded datasets which are trained and saved as part of the experiments presented in this Repo: (https://github.com/GhadaElkhawaga/PPM_XAI_Comparison). So, experiments in this paper, are built on top of results from our previous work.
