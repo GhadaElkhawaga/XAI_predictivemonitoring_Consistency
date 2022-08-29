@@ -158,7 +158,7 @@ def compute_features_importance(out_dir, ds, X_train, y_train, ffeatures, target
     l_negative = results_df.columns[(results_df < 0).any()].tolist()
     if l_negative:
         for x in l_negative:
-          min = results_df[l_negative].min() 
+          min = results_df[x].min()[0] 
           if min < 0:
             results_df[x] = results_df[x].apply(lambda x: x +abs(min))
             
