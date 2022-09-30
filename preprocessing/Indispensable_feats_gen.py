@@ -162,9 +162,9 @@ def compute_features_importance(out_dir, ds, X_train, y_train, ffeatures, target
           if min < 0:
             results_df[x] = results_df[x].apply(lambda x: x +abs(min))
             
-    std_scaler = MinMaxScaler().fit(results_df)
-    results_df = pd.DataFrame(std_scaler.transform(results_df),
-                              columns=results_df.columns)
+    for col in results_df.columns.tolist():
+        results_df[col] = MinMaxScaler().fit_transform(col)
+        
     results_df_mean = results_df[[x for x in results_df.columns.values]].mean()
     results_df = results_df.append(results_df_mean, ignore_index=True)
     results_df['feature'] = ffeatures + ['mean_threshold']
