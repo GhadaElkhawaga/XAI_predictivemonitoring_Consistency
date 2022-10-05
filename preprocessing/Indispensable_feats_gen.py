@@ -163,7 +163,7 @@ def compute_features_importance(out_dir, ds, X_train, y_train, ffeatures, target
             results_df[x] = results_df[x].apply(lambda x: x +abs(min))
             
     for col in results_df.columns.tolist():
-        results_df[col] = MinMaxScaler().fit_transform(col)
+        results_df[col] = MinMaxScaler().fit_transform(results_df[col])
         
     results_df_mean = results_df[[x for x in results_df.columns.values]].mean()
     results_df = results_df.append(results_df_mean, ignore_index=True)
