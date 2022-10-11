@@ -27,16 +27,14 @@ def discretize(training_info, method_name, discretized_folder):
     return
 
 
+
 def scale_update(old_dict):
     scale_df = pd.DataFrame()
     for x in old_dict.keys():
       vals = old_dict[x]
       scale_df[x] = vals.values()
-    df_scaler = MinMaxScaler()
-
-    scale_df = pd.DataFrame(df_scaler.fit_transform(scale_df),
-                            columns = scale_df.columns)
-
+    for col in scale_df.columns.tolist():
+        scale_df[col] = MinMaxScaler().fit_transform(scale_df[col].values.reshape(-1, 1))
     for i in range(len(old_dict.keys())):
       keys = list(list(old_dict.values())[i].keys())
       scaled_vals = list(scale_df[scale_df.columns[i]].values)
